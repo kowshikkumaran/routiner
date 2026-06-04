@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Settings, DailyPlan, DailyStep, JournalEntry, DailyStepInput } from '../types';
 import { dataService } from '../services';
+import { openExternalUrl } from '../utils/url';
 
 interface AppState {
   // Navigation
@@ -170,12 +171,7 @@ export const useAppStore = create<AppState>((set, get) => {
 
           // Proactively open URL if configured
           if (updated.url) {
-            try {
-              const { openUrl } = await import('@tauri-apps/plugin-opener');
-              await openUrl(updated.url);
-            } catch (e) {
-              console.error('Failed to open step URL:', e);
-            }
+            await openExternalUrl(updated.url);
           }
         }
 
@@ -217,12 +213,7 @@ export const useAppStore = create<AppState>((set, get) => {
 
           // Proactively open URL if configured
           if (updatedNext.url) {
-            try {
-              const { openUrl } = await import('@tauri-apps/plugin-opener');
-              await openUrl(updatedNext.url);
-            } catch (e) {
-              console.error('Failed to open step URL:', e);
-            }
+            await openExternalUrl(updatedNext.url);
           }
         }
 
@@ -267,12 +258,7 @@ export const useAppStore = create<AppState>((set, get) => {
 
           // Proactively open URL if configured
           if (updatedNext.url) {
-            try {
-              const { openUrl } = await import('@tauri-apps/plugin-opener');
-              await openUrl(updatedNext.url);
-            } catch (e) {
-              console.error('Failed to open step URL:', e);
-            }
+            await openExternalUrl(updatedNext.url);
           }
         }
 

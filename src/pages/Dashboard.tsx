@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { Play, Pause, Check, SkipForward, ExternalLink, Moon } from 'lucide-react';
+import { openExternalUrl } from '../utils/url';
 
 export const Dashboard: React.FC = () => {
   const {
@@ -39,12 +40,7 @@ export const Dashboard: React.FC = () => {
 
   const handleOpenUrl = async () => {
     if (activeStep?.url) {
-      try {
-        const { openUrl } = await import('@tauri-apps/plugin-opener');
-        await openUrl(activeStep.url);
-      } catch (err) {
-        console.error('Failed to open URL:', err);
-      }
+      await openExternalUrl(activeStep.url);
     }
   };
 
