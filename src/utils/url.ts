@@ -1,17 +1,16 @@
 /**
  * Safely opens an external URL.
- * Under Tauri, it uses the @tauri-apps/plugin-opener plugin to launch the default system browser.
+ * Under Electron, it uses the main process shell API to launch the default system browser.
  * Under web browsers, it opens the URL in a new window/tab.
  */
 export async function openExternalUrl(url: string): Promise<void> {
-  const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
-  if (isTauri) {
+  const isElectron = typeof window !== 'undefined' && 'electron' in window;
+  if (isElectron) {
     try {
-      const { openUrl } = await import('@tauri-apps/plugin-opener');
-      await openUrl(url);
+      await window.electron.ipcRenderer.invoke('open_external_url', { url });
       return;
     } catch (e) {
-      console.error('Failed to open URL via Tauri:', e);
+      console.error('Failed to open URL via Electron:', e);
     }
   }
   
